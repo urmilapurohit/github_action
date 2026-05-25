@@ -5,13 +5,23 @@ name: vlv-test-workflow
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
   #pull_request:
     #branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch:    
+    inputs:
+     num1: 
+      decription: test
+      default: 34
+      required: true
+     num2: 
+      decription: test
+      default: 50
+      required: true
+
 env:
   name: "Urmila engineer"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -52,3 +62,6 @@ jobs:
           echo "This is ${{ github.repository }}"
           echo "This is ${{ github.workflow }}"
           echo "This is ${{ github.triggering_actor }}"
+      # Runs a set of commands using the runners shell
+      - name: input var
+        run: echo "The sum of ${{inputs.num1}} and ${{inputs.num2}} is $((${{inputs.num1}} + ${{inputs.num2}}))"

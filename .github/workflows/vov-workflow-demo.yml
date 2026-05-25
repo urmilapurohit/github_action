@@ -49,7 +49,6 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script testttttttttttttt
         run: |
-        echo "This is ${{github.repository}}"
-        echo "This is ${{github.workflow}}"
-        echo "This is ${{github.triggering_actor}}"
-    
+          echo "This is ${{ github.repository }}"
+          echo "This is ${{ github.workflow }}"
+          echo "This is ${{ github.triggering_actor }}"

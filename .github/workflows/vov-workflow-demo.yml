@@ -5,24 +5,25 @@ name: vlv-test-workflow
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  # push:
-  #   branches: [ "main" ]
+  push:
+    branches: [ "main" ]
   #pull_request:
     #branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:    
 
-  # input values can be added during manually run of workflow. Can change the input value Only if triggering workflow manually. Auto trigger can't chnage the input value, it will use default values only.
-    inputs:
-     num1: 
-      decription: test
-      default: 34
-      required: true
-     num2: 
-      decription: test
-      default: 50
-      required: true
+  ## input values can be added during manually run of workflow. Can change the input value Only if triggering workflow manually. Auto trigger can't chnage the input value, it will use default values only.
+    # inputs:
+    #  num1: 
+    #   decription: test
+    #   default: 34
+    #   required: true
+    #  num2: 
+    #   decription: test
+    #   default: 50
+    #   required: true
+
 # local file variables
 env:
   name: "Urmila engineer"
@@ -59,6 +60,6 @@ jobs:
           echo "This is ${{ github.repository }}"
           echo "This is ${{ github.workflow }}"
           echo "This is ${{ github.triggering_actor }}"
-      # Runs a set of commands using the runners shell
-      - name: INPUT varibale thet can provide while triggering workflow maually.
-        run: echo "The sum of ${{inputs.num1}} and ${{inputs.num2}} is $((${{inputs.num1}} + ${{inputs.num2}}))"
+      ## Runs a set of commands using the runners shell
+      # - name: INPUT varibale thet can provide while triggering workflow maually.
+      #   run: echo "The sum of ${{inputs.num1}} and ${{inputs.num2}} is $((${{inputs.num1}} + ${{inputs.num2}}))"

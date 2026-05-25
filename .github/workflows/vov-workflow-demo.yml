@@ -12,7 +12,6 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:    
-
   ## input values can be added during manually run of workflow. Can change the input value Only if triggering workflow manually. Auto trigger can't chnage the input value, it will use default values only.
     # inputs:
     #  num1: 
@@ -43,7 +42,8 @@ jobs:
       - name: LOCAL and REPO variabls
         run: |
           echo  "Hello, $name. This is local variable that can be define in file, job and steps."
-          echo  " This variable id define at repository level. ${{ vars.MAIN}}. All workflow in repo can use this variables"  
+          echo  "This variable id define at repository level. ${{ vars.MAIN}}. All workflow in repo can use this variables"
+          echo  "This SECRETS id define at repository level. ${{secrets.my_key}} " 
   # This workflow contains a single job called "build"
   test:
     # The type of runner that the job will run on

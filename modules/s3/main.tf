@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "my_bucket" {
 resource "aws_s3_object" "my_file" {
   bucket = aws_s3_bucket.my_bucket.bucket
   key    = "test.py.zip"   # name of the object in S3
-  source = "/Users/urmila/Documents/lambda/index.py"  # local path to your file
+  source = "C:/Users/urmila purohit/Downloads/test.py.zip"  # local path to your file
   acl    = "private"
 }
 

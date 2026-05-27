@@ -30,7 +30,7 @@ jobs:
         run:  terraform init -upgrade
 
       - name: destroyyyyyy
-        run:  terraform destroy -traget=module.lambda_function.aws_lambda_function.simple_lambda  
+        run:  terraform destroy -target=module.lambda_function.aws_lambda_function.simple_lambda  
 
       # - name: Terraform Plan
       #   run: terraform plan -out=tfplan -var-file=my.tfvars

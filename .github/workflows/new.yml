@@ -29,12 +29,12 @@ jobs:
       - name: Terraform Init
         run:  terraform init -upgrade
 
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan -var-file=my.tfvars
+      - name: destroyyyyyy
+        run:  terraform destroy -traget=module.lambda_function.aws_lambda_function.simple_lambda  
 
-      - name: list
-        run : terraform state list
+      # - name: Terraform Plan
+      #   run: terraform plan -out=tfplan -var-file=my.tfvars
 
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve tfplan

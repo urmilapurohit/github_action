@@ -2,7 +2,7 @@
 cidr_block = "10.0.0.0/16"
 vpc_tag = "for test"
 
-bucket_name = "skjdhiednefslfisdlvlvsdjj"
+bucket_name = "skjdhiednefslfisdlvlvlv"
 
 
 # function_name = "simple_lambda_function"

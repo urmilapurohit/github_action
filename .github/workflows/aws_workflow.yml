@@ -30,7 +30,7 @@ jobs:
         run:  terraform init -upgrade
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan -var-file=terraform.tfvarsn
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan

@@ -27,7 +27,10 @@ jobs:
           aws-region: us-east-1
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          rm -rf .terraform
+          rm -f .terraform.lock.hcl
+          terraform init -upgrade
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan

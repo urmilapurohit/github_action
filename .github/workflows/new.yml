@@ -32,5 +32,9 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan -var-file=my.tfvars
 
+      - name: list
+        run : terraform state list
+
+
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan

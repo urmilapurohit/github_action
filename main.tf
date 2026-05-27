@@ -1,8 +1,8 @@
 variable "vpc_name" {type = string}
-variable "virtual_network_cidr" {type = string}
+variable "cidr_block" {type = string}
 variable "vpc_tag" {type = string}
 
-variable "bucket_name" {type = string}
+variable "bucket" {type = string}
 
 
 
@@ -10,7 +10,7 @@ variable "bucket_name" {type = string}
 module "vpc" {
   source = "./modules/vpc"
   Name                 = var.vpc_name
-  cidr_block           = var.virtual_network_cidr
+  cidr_block           = var.cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
@@ -20,6 +20,6 @@ module "vpc" {
 # Call the S3 bucket module
 module "s3_bucket" {
   source = "./modules/s3"
-  bucket_name = var.bucket_name
+  bucket = var.bucket
   acl         = "private"
 }

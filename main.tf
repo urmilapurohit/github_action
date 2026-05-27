@@ -9,6 +9,8 @@ variable "func_role" {type = string}
 variable "func_handler"{type = string}
 variable "func_runtime"{type = string}
 
+#variable "func_bucket"{type = string}
+variable "buck_file"{type = string}
 
 # Call the VPC module
 module "vpc" {
@@ -30,4 +32,7 @@ module "lambda_function" {
   func_role     = var.func_role 
   func_handler  = var.func_handler
   func_runtime  = var.func_runtime
+  func_bucket   = module.s3_bucket.bucket_name
+  buck_file     = var.buck_file
+
 }

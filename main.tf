@@ -2,7 +2,7 @@ variable "vpc_name" {type = string}
 variable "virtual_network_cidr" {type = string}
 variable "vpc_tag" {type = string}
 
-variable "s3_name" {type = string}
+variable "bucket_name" {type = string}
 
 
 
@@ -20,6 +20,6 @@ module "vpc" {
 # Call the S3 bucket module
 module "s3_bucket" {
   source = "./modules/s3"
-  bucket_name = var.s3_name
+  bucket_name = var.bucket_name
   acl         = "private"
 }

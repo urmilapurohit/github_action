@@ -1,0 +1,11 @@
+variable "s3_name" {}
+
+# Create an S3 bucket
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = var.s3_name
+  acl    = "private"
+  tags = {
+    Name        = "my-s3-bucket"
+    Environment = "Dev"
+  }
+}

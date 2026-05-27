@@ -9,3 +9,9 @@ resource "aws_s3_bucket" "my_bucket" {
     Environment = "Dev"
   }
 }
+
+output func_bucket_name {
+  value       = aws_s3_bucket.my_bucket.bucket
+  description = "buck name"
+
+}

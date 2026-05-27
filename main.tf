@@ -32,7 +32,7 @@ module "lambda_function" {
   func_role     = var.func_role 
   func_handler  = var.func_handler
   func_runtime  = var.func_runtime
-  func_bucket   = module.s3_bucket.bucket_name
+  func_bucket   = module.s3_bucket.func_bucket_name
   buck_file     = var.buck_file
 
 }

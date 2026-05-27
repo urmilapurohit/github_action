@@ -36,4 +36,4 @@ module "lambda_function" {
   buck_file     = var.buck_file
   depends_on    = [module.s3_bucket]
 
-# }
+}

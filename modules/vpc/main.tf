@@ -1,8 +1,6 @@
-variable "vpc_name" {}
-variable "virtual_network_cidr" {}
-variable "vpc_tag" {}
-
-
+variable "vpc_name" {type = string}
+variable "virtual_network_cidr" {type = string}
+variable "vpc_tag" {type = string}
 
 # Create a VPC
 resource "aws_vpc" "main_vpc" {

@@ -1,4 +1,4 @@
-variable "s3_name" {}
+variable "s3_name" {type = string}
 
 # Create an S3 bucket
 resource "aws_s3_bucket" "my_bucket" {

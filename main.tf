@@ -34,6 +34,6 @@ module "lambda_function" {
   func_runtime  = var.func_runtime
   func_bucket   = module.s3_bucket.func_bucket_name
   buck_file     = var.buck_file
-  depends_on    = module.s3_bucket
+  depends_on    = [module.s3_bucket]
 
 # }

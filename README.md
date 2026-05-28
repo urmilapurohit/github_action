@@ -20,7 +20,6 @@ module "s3_bucket" {
  spetps: DynamoBD >> table name: terraform-locks >> partition-keys: LockID -->
 
 <!-- 
-
 -------------------------Types of varibale-----------------------
  *At yml file level
 - local variable can be define with scop like .yml file, jobs, steps

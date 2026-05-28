@@ -1,4 +1,4 @@
-name: new
+name: Terraform via github action
 
 on:
   # push:

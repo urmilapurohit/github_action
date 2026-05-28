@@ -23,7 +23,7 @@ module "s3_bucket" {
  *At yml file level
 - local variable can be define with scop like .yml file, jobs, steps
 - env:
-  	cloud: aws
+    cloud: aws
 
 *At REPO level
 - GitHub >> setting >> variable and secrets >> add variable

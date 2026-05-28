@@ -7,8 +7,9 @@ resource "aws_s3_bucket" "my_bucket" {
   bucket = var.bucket_name
 }
 
+- But we have to apply same var value in main file like below:
 
-but we have to apply same var value in main file like below:
+```hcl
 module "s3_bucket" {
   source = "./modules/s3"
   bucket_name = var.bucket_name

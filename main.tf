@@ -35,4 +35,5 @@ module "lambda_function" {
   func_bucket   = module.s3_bucket.func_bucket_name
   buck_file     = var.buck_file
   depends_on    = [module.s3_bucket]
+  
 }

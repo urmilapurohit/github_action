@@ -7,8 +7,10 @@
   bucket = var.bucket_name
 }
 
-  2. vresource "aws_vpc" "main_vpc" {
-     cidr_block           = var.cidr_block_name }
+```hcl
+  vresource "aws_vpc" "main_vpc" {
+     cidr_block           = var.cidr_block_name 
+}
 
 - but we have to apply same var name (in child module) in to the main file like below example:
   1. module "s3_bucket" {

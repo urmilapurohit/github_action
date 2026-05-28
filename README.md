@@ -1,8 +1,8 @@
 --------------------------Terraform basics--------------------------
 
 - In child file(module like s3/vpc) we can change var name like below example:
-  1. resource "aws_s3_bucket" "my_bucket" {
-     bucket                = var.bucket_name }
+    esource "aws_s3_bucket" "my_bucket" {
+    bucket                = var.bucket_name }
 
   2. vresource "aws_vpc" "main_vpc" {
      cidr_block           = var.cidr_block_name }

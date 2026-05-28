@@ -1,8 +1,12 @@
 ------------------Terraform notes while using from Github action---------------------
 
-In child file(module like s3) we can change var value like below:
+- In child file (module like S3), we can change variable value like below:
+
+```hcl
 resource "aws_s3_bucket" "my_bucket" {
-bucket = var.bucket_name }
+  bucket = var.bucket_name
+}
+
 
 but we have to apply same var value in main file like below:
 module "s3_bucket" {

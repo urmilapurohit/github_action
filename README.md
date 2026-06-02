@@ -17,7 +17,7 @@ module "s3_bucket" {
 <!-- when we apply terrafrom from github action then maintain the state file in s3 backend other everytime github action runs, it will create new terraform infrastructre and resources
 
 * create S3 and DynamoDB table for terraform.
-1.  Create bucket and create file like "prod/terraform.tfstate"
+1.  Create bucket and create folder like "prod"
 2. DynamoBD >> table name: terraform-locks >> partition-keys: LockID 
 
 <!-- 

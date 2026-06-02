@@ -38,3 +38,10 @@ jobs:
 
       # - name: destroyyyyyy
       #   run:  terraform destroy -target=module.lambda_function.aws_lambda_function.simple_lambda  
+
+
+jobs:
+  call-reusable:
+    uses: ./.github/workflows/github-action-basic.yml
+    with:
+      message: "Hello from main workflow"

@@ -14,10 +14,11 @@ module "s3_bucket" {
   bucket_name = var.bucket_name
 } -->
 
-<!-- wehn we apply terrafrom from github action then maintain the state file in s3 backend other everytime github action runs, it will create new terraform infrastructre and resources
+<!-- when we apply terrafrom from github action then maintain the state file in s3 backend other everytime github action runs, it will create new terraform infrastructre and resources
 
-1. create S3 and DynamoDB table for terraform. Also create file like "prod/terraform.tfstate"
-2. steps: DynamoBD >> table name: terraform-locks >> partition-keys: LockID 
+* create S3 and DynamoDB table for terraform.
+1.  Create bucket and create file like "prod/terraform.tfstate"
+2. DynamoBD >> table name: terraform-locks >> partition-keys: LockID 
 
 <!-- 
 -------------------------Types of varibale-----------------------

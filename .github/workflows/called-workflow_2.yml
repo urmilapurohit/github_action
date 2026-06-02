@@ -1,0 +1,26 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Github Action basics
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow when called by main/caller workflow
+  workflow_call:
+    inputs:
+      message:
+        required: false
+        type: string
+
+
+# local file variables
+env:
+  name: "Urmila purohit"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: TEST
+        run: |
+          echo "This workflow is CALLED workflow"
+          echo "This workflow is called by caller workflow"

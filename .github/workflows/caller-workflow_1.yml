@@ -1,0 +1,32 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Github Action basics
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+
+# local file variables
+env:
+  name: "Urmila purohit"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: echo "This is CALLER workflow".
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: TEST
+        run:  Hii $name.
+  # This is how we can call any workfolw inside the /workflow folder
+  call-reusable:
+    uses: ./.github/workflows/called-workflow_2.yml
+    with:
+      message: Here caller workflow is calling to another workflow. "Hello from CALLER workflow"

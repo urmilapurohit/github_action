@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: TEST
-        run:  echo "Hii $name.""
+        run:  echo "Hii $name."
   # This is how we can call any workfolw inside the /workflow folder
   call-reusable:
     uses: ./.github/workflows/called-workflow_2.yml

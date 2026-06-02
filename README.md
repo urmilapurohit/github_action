@@ -17,7 +17,7 @@ module "s3_bucket" {
 <!-- when we apply terrafrom from github action then maintain the state file in s3 backend other everytime github action runs, it will create new terraform infrastructre and resources
 
 * create S3 and DynamoDB table for terraform.
-1.  Create bucket and create folder like "prod"
+1. Create bucket and create folder like "prod"
 2. DynamoBD >> table name: terraform-locks >> partition-keys: LockID 
 
 <!-- 
@@ -47,3 +47,19 @@ Example:
 
 Reference linkhttps://docs.github.com/en/actions/reference/workflows-and-actions/contexts
  -->
+
+<!-- -----------------------------Reusable workflow-----------------------------------
+* we can call one workflow from another workflow:
+1. use below code to call workflow from main workflow:
+  call-reusable:
+    uses: ./.github/workflows/called-workflow_2.yml
+    with:
+      message: Here caller workflow is calling to another workflow. "Hello from CALLER workflow"
+      
+2. use below code to get called by main workflow:
+  workflow_call:
+    inputs:
+      message:
+        required: false
+        type: string -->
+

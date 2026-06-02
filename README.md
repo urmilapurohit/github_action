@@ -55,11 +55,20 @@ Reference linkhttps://docs.github.com/en/actions/reference/workflows-and-actions
     uses: ./.github/workflows/called-workflow_2.yml
     with:
       message: Here caller workflow is calling to another workflow. "Hello from CALLER workflow"
-      
+
 2. use below code to get called by main workflow:
   workflow_call:
     inputs:
       message:
         required: false
-        type: string -->
+        type: string
+
+* types of  reusabale workflow:
+Feature              | workflow_call (Reusable)       | workflow_run (Chaining)
+---------------------|--------------------------------|----------------------------
+Use case             | Share logic across workflows   | Trigger workflow after another finishes
+Inputs/Secrets       | Can pass via with & secrets    | No direct input passing
+Cross-repo support   | Yes                           | No (same repo only)
+Best for             | Modular, reusable workflows    | Sequential CI/CD pipelines
+ -->
 

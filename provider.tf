@@ -2,13 +2,19 @@ terraform {
   required_version = ">= 1.5"
 
   backend "s3" {
-    bucket         = "terraform-state-bucket-poc-per"
-    region         = "eu-west-1"
-    dynamodb_table = "terraform-locks"
-    key            = "placeholder"
+    bucket = "my-terraform-state-bucket"
+    key    = "ec2/terraform.tfstate"
+    region = "eu-west-1"
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = "eu-west-1"
 }

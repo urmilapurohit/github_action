@@ -1,0 +1,33 @@
+name: Deploy Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.PROD_ROLE }}
+          aws-region: eu-west-1
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="bucket=tf-state-prod" \
+            -backend-config="key=ec2/prod.tfstate" \
+            -backend-config="region=eu-west-1"
+
+      - name: Terraform Apply
+        run: |
+          terraform apply -auto-approve \
+            -var="environment=prod" \
+            -var="instance_type=t3.large" \
+            -var="ami_id=ami-xxxxxxxx"

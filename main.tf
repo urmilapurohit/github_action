@@ -1,8 +1,20 @@
-resource "aws_instance" "ec2" {
-  ami           = "ami-0df368112825f8d8f" # Amazon Linux 2023 (eu-west-1)
-  instance_type = var.instance_type
+terraform {
+  required_version = ">= 1.5"
 
-  tags = {
-    Name = var.instance_name
+  backend "s3" {
+    bucket = "my-terraform-state-bucket"
+    key    = "ec2/terraform.tfstate"
+    region = "eu-west-1"
   }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "eu-west-1"
 }

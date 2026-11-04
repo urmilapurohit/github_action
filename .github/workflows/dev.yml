@@ -1,29 +1,42 @@
-name: Deploy DEV
+name: Deploy EC2
 
 on:
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: eu-west-1
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - uses: hashicorp/setup-terraform@v3
-
-      - name: Configure AWS
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::111111111111:role/github-actions-role
-          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::123456789012:role/github-actions-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
 
       - name: Terraform Init
-        run: |
-          terraform init \
-            -backend-config="key=dev/terraform.tfstate"
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        run: |
-          terraform apply -auto-approve \
-            -var="instance_name=dev-ec2"
+        run: terraform apply -auto-approve tfplan

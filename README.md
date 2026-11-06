@@ -20,29 +20,6 @@ This guide explains how to configure GitHub Actions OpenID Connect (OIDC) access
 
 Create the GitHub Actions identity provider in each AWS account.
 
-## AWS CLI
-
-```bash
-aws iam create-open-id-connect-provider \
-  --url https://token.actions.githubusercontent.com \
-  --client-id-list sts.amazonaws.com \
-  --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
-```
-
-## Verify
-
-```bash
-aws iam list-open-id-connect-providers
-```
-
-Expected output:
-
-```text
-arn:aws:iam::<ACCOUNT_ID>:oidc-provider/token.actions.githubusercontent.com
-```
-
----
-
 ## Create via AWS Console
 
 1. Navigate to **IAM**
@@ -109,14 +86,6 @@ Replace `<ACCOUNT_ID>` with the AWS Account ID where the role is being created.
 
 Attach the AWS managed `*dministratorAccess` policy to the *ole.
 
-## AWS CLI
-
-```bash
-aws iam *ttach-role-policy \
-  --role-name *itHubActionsAdminRole \
-  --policy*arn arn:aws:iam::aws:policy/Admini*tratorAccess
-```
-
 ## AWS Console
 
 *. Open the role.
@@ -163,21 +132,6 @@ jobs:
 
       - name: Verify Acces*
         run: aws sts get-caller-i*entity
-```
-
----
-
-# Testing
-
-Push a*change to the repository and verif* that the workflow succeeds.
-
-Expe*ted output:
-
-```json
-{
-  "UserId":*"AROAxxxxxxxxxxxxxxxx",
-  "Account*: "123456789012",
-  "Arn": "arn:aw*:sts::123456789012:assumed-role/Gi*HubActionsAdminRole/GitHubActions"*}
 ```
 
 ---

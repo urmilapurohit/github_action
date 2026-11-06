@@ -1,4 +1,4 @@
-name: Deploy EC2 dev
+name: Deploy EC2 prod
 
 on:
   workflow_dispatch:

@@ -1,74 +1,228 @@
-- Check the code section:
+# GitHub Actions OIDC Setup for AWS Accounts
 
-<!--  
+This guide explains how to configure GitHub Actions OpenID Connect (OIDC) access to AWS by:
 
-------------------Terraform notes while using from Github action---------------------
+1. Creating the GitHub OIDC Identity Provider in each AWS account.
+2. Creating an IAM role with administrative access.
+3. Configuring the role trust policy to allow authentication from the GitHub repository `urmilapurohit/github_action`.
 
-In child file(module like s3) we can change var value like below:
-resource "aws_s3_bucket" "my_bucket" {
-bucket = var.bucket_name }
+---
 
-but we have to apply same var value in main file like below:
-module "s3_bucket" {
-  source = "./modules/s3"
-  bucket_name = var.bucket_name
-} -->
+## Prerequisites
 
-<!-- when we apply terrafrom from github action then maintain the state file in s3 backend other everytime github action runs, it will create new terraform infrastructre and resources
+- AWS Account access with IAM administrator privileges
+- GitHub repository: `urmilapurohit/github_action`
+- AWS CLI installed and configured
 
-* create S3 and DynamoDB table for terraform.
-1. Create bucket and create folder like "prod"
-2. DynamoBD >> table name: terraform-locks >> partition-keys: LockID 
+---
 
-<!-- 
--------------------------Types of varibale-----------------------
- *At yml file level
-- local variable can be define with scop like .yml file, jobs, steps
-- env:
-    cloud: aws
+# Step 1: Create the GitHub OIDC Identity Provider
 
-*At REPO level
-- GitHub >> setting >> variable and secrets >> add variable
-- ${{var.my_var_name}}
+Create the GitHub Actions identity provider in each AWS account.
 
+## AWS CLI
 
-* GitHub predefine variables(GitHub metadata):
-Example:
-        run: |
-          echo "This is ${{ github.repository }}"
-          echo "This is ${{ github.workflow }}"
-          echo "This is ${{ github.triggering_actor }}"
-          echo "This is ${{ secrets.GITHUB_TOKEN }}"
+```bash
+aws iam create-open-id-connect-provider \
+  --url https://token.actions.githubusercontent.com \
+  --client-id-list sts.amazonaws.com \
+  --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
+```
 
-* Secrets: This secrets can be created just like "REPO level variable"
-- GitHub >> setting >> variable and secrets >> add secrets
-- ${{ secrets.MY_SECRET }}
+## Verify
 
+```bash
+aws iam list-open-id-connect-providers
+```
 
-Reference linkhttps://docs.github.com/en/actions/reference/workflows-and-actions/contexts
- -->
+Expected output:
 
-<!-- -----------------------------Reusable workflow-----------------------------------
-* we can call one workflow from another workflow:
-1. use below code to call workflow from main workflow:
-  call-reusable:
-    uses: ./.github/workflows/called-workflow_2.yml
-    with:
-      message: Here caller workflow is calling to another workflow. "Hello from CALLER workflow"
+```text
+arn:aws:iam::<ACCOUNT_ID>:oidc-provider/token.actions.githubusercontent.com
+```
 
-2. use below code to get called by main workflow:
-  workflow_call:
-    inputs:
-      message:
-        required: false
-        type: string
+---
 
-* types of  reusabale workflow:
-Feature              | workflow_call (Reusable)       | workflow_run (Chaining)
----------------------|--------------------------------|----------------------------
-Use case             | Share logic across workflows   | Trigger workflow after another finishes
-Inputs/Secrets       | Can pass via with & secrets    | No direct input passing
-Cross-repo support   | Yes                           | No (same repo only)
-Best for             | Modular, reusable workflows    | Sequential CI/CD pipelines
- -->
+## Create via AWS Console
 
+1. Navigate to **IAM**
+2. Select **Identity Providers**
+3. Click **Add Provider**
+4. Choose:
+   - Provider Type: **OpenID Connect**
+   - Provider URL:
+
+     ```text
+     https://token.actions.githubusercontent.com
+     ```
+
+   - Audience:
+
+     ```text
+     sts.amazonaws.com
+     ```
+
+5. Click **Add Provider**
+
+---
+
+# Step 2: Create GitHub Actions IAM Role
+
+Create an IAM role named `GitHubActionsAdminRole` and use the following trust policy.
+
+## Trust Policy
+
+Replace `<ACCOUNT_ID>` with the AWS Account ID where the role is being created.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::<ACCOUNT_ID>:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": "repo:urmilapurohit/github_action:*"
+        }
+      }
+    }
+  ]
+}
+```*
+---
+
+# Step 3: Attach Administrat*r Access
+
+Attach the AWS managed `*dministratorAccess` policy to the *ole.
+
+## AWS CLI
+
+```bash
+aws iam *ttach-role-policy \
+  --role-name *itHubActionsAdminRole \
+  --policy*arn arn:aws:iam::aws:policy/Admini*tratorAccess
+```
+
+## AWS Console
+
+*. Open the role.
+2. Select **Add p*rmissions**.
+3. Attach policy:
+   * `AdministratorAccess`
+
+---
+
+# Ste* 4: Configure GitHub Actions
+
+Crea*e a workflow file under:
+
+```text
+*github/workflows/deploy.yml
+```
+
+E*ample workflow:
+
+```yaml
+name: Dep*oy
+
+on:
+  push:
+    branches:
+    * - main
+
+permissions:
+  id-token: *rite
+  contents: read
+
+jobs:
+  dep*oy:
+    runs-on: ubuntu-latest
+
+  * steps:
+      - name: Checkout
+   *    uses: actions/checkout@v4
+
+   *  - name: Configure AWS Credential*
+        uses: aws-actions/configu*e-aws-credentials@v4
+        with:*          role-to-assume: arn:aws:*am::<ACCOUNT_ID>:role/GitHubAction*AdminRole
+          aws-region: eu*west-1
+
+      - name: Verify Acces*
+        run: aws sts get-caller-i*entity
+```
+
+---
+
+# Testing
+
+Push a*change to the repository and verif* that the workflow succeeds.
+
+Expe*ted output:
+
+```json
+{
+  "UserId":*"AROAxxxxxxxxxxxxxxxx",
+  "Account*: "123456789012",
+  "Arn": "arn:aw*:sts::123456789012:assumed-role/Gi*HubActionsAdminRole/GitHubActions"*}
+```
+
+---
+
+# Troubleshooting
+
+## *o OpenIDConnect provider found
+
+Ve*ify the provider exists:
+
+```bash
+*ws iam list-open-id-connect-provid*rs
+```
+
+## Not authorized to perfo*m sts:AssumeRoleWithWebIdentity
+
+V*rify:
+
+- Identity Provider exists.*- Role trust policy contains the c*rrect OIDC provider ARN.
+- Repository name matches:
+
+```text
+repo:urmilapurohit/github_action:*
+```
+
+- Workflow permissions include:
+
+```yaml
+permissions:
+  id-token: write
+  contents: read
+```
+
+## Invalid identity token
+
+Ensure the workflow is using:
+
+```yaml
+uses: aws-actions/configure-aws-credentials@v4
+```
+
+and the correct role ARN.
+
+---
+
+# Security Recommendation
+
+For production environments, avoid using `AdministratorAccess`. Instead, create a custom IAM policy that grants only the permissions required by your Terraform deployment pipelines. This follows AWS least-privilege best practices and reduces security risk.

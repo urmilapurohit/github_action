@@ -1,4 +1,4 @@
-bucket         = "terraform-state-account2-cnapp"
+bucket         = "bucket-state-account2-cnapp"
 key            = "ec2/terraform.tfstate"
 region         = "eu-west-1"
 encrypt        = true

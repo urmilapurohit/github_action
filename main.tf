@@ -4,5 +4,7 @@ resource "aws_instance" "ec2" {
 
   tags = {
     Name = "terraform-ec2"
+    Environment = "dev"
+    Project     = "github-actions-demo"
   }
 }
